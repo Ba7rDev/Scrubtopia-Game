@@ -15,13 +15,16 @@ public class AudioManager : MonoBehaviour
         {
             instance = this;
         }
+        else
+        {
+            Destroy(gameObject); // Prevents duplicate audio managers on menu reload
+        }
     }
 
     public void PlaySound(AudioClip clip)
     {
         if (clip != null && audioSource != null)
         {
-            // PlayOneShot allows overlapping sounds without interrupting currently playing audio
             audioSource.PlayOneShot(clip);
         }
     }

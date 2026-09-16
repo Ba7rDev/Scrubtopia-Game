@@ -9,12 +9,24 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if (instance == null) instance = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject); // Prevents duplicate managers across scene loads
+        }
     }
 
     public void AddScore(int amount)
     {
         score += amount;
-        scoreText.text = "Score: " + score;
+
+        // NULL CHECK: Prevents MissingReferenceException if ScoreText is destroyed
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + score;
+        }
     }
 }
