@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class Obstacle : MonoBehaviour
@@ -17,11 +16,11 @@ public class Obstacle : MonoBehaviour
 
     IEnumerator HandlePlayerDeath(GameObject player)
     {
-        // 1. Disable player movement script so it stops moving
+        // 1. Disable player movement script
         PlayerMovement movement = player.GetComponent<PlayerMovement>();
         if (movement != null) movement.enabled = false;
 
-        // 2. Hide player sprite and disable colliders (Keeps camera & audio active!)
+        // 2. Hide player sprite and disable colliders
         SpriteRenderer sr = player.GetComponent<SpriteRenderer>();
         if (sr != null) sr.enabled = false;
 
@@ -34,10 +33,13 @@ public class Obstacle : MonoBehaviour
             AudioManager.instance.PlaySound(AudioManager.instance.deathSound);
         }
 
-        // 4. Wait for the sound to finish before reloading
+        // 4. Wait for the sound to play
         yield return new WaitForSeconds(0.8f);
 
-        // 5. Restart scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // 5. Show Death Panel UI instead of restarting immediately
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.ShowDeathScreen();
+        }
     }
 }

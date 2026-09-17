@@ -1,10 +1,15 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement; // Required for scene loading
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
+    [Header("UI References")]
     public TextMeshProUGUI scoreText;
+    public GameObject deathPanel; // Assign your DeathPanel GameObject here in the Inspector
+
     private int score = 0;
 
     void Awake()
@@ -28,5 +33,28 @@ public class GameManager : MonoBehaviour
         {
             scoreText.text = "Score: " + score;
         }
+    }
+
+    // Call this method when Mario dies
+    public void ShowDeathScreen()
+    {
+        if (deathPanel != null)
+        {
+            deathPanel.SetActive(true);
+        }
+    }
+
+    // Attach this method to the Respawn Button's OnClick event
+    public void RespawnGame()
+    {
+        // Reloads the currently active scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    // Attach this method to the Quit Button's OnClick event
+    public void QuitToMainMenu()
+    {
+        // Loads the Main Menu scene
+        SceneManager.LoadScene("MainMenu");
     }
 }
